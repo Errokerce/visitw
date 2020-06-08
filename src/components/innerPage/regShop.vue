@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import cityData from "../assets/city.json";
+import cityData from "../../assets/city.json";
 export default {
   name: "RegShop",
   data() {

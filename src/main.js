@@ -4,11 +4,13 @@ import Vue from "vue";
 import App from "./Home";
 import router from "./router";
 import ElementUI from "element-ui";
+import VueQrcodeReader from "vue-qrcode-reader";
 
 import "element-ui/lib/theme-chalk/index.css";
 import "element-ui/lib/theme-chalk/display.css";
 
 Vue.use(ElementUI);
+Vue.use(VueQrcodeReader);
 
 Vue.config.productionTip = false;
 

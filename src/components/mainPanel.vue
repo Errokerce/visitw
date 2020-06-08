@@ -5,7 +5,7 @@
       <el-header height="40px">{{navItem[pageSelect]}}</el-header>
       <more-info v-if="pageSelect==2" />
       <reg-shop v-if="pageSelect==1" />
-      <el-main v-if="pageSelect==0">到店登記</el-main>
+      <visit-shop v-if="pageSelect==0" />
       <el-main v-if="pageSelect==3">通報病例</el-main>
     </el-container>
     <el-drawer
@@ -27,19 +27,21 @@
   </div>
 </template>
 <script>
-import MoreInfo from "./moreInfo.vue";
-import RegShop from "./regShop.vue";
+import MoreInfo from "./innerPage/moreInfo.vue";
+import RegShop from "./innerPage/regShop.vue";
+import VisitShop from "./innerPage/visitShop.vue";
 
 export default {
   name: "mainPanel",
   components: {
     MoreInfo,
-    RegShop
+    RegShop,
+    VisitShop
   },
   data() {
     return {
       navDrawer: false,
-      pageSelect: 1,
+      pageSelect: 0,
       navItem: ["到店登記", "店家管理", "資料補登", "通報病例"]
     };
   },
