@@ -55,7 +55,7 @@ export default {
       this.btnEnable = /^09\d{8}$/.test(v);
     },
     smsCode: function(v) {
-      this.btnEnable = /\d{6}$/.test(v);
+      this.btnEnable = /^\d{6}$/.test(v);
     }
   },
   methods: {
