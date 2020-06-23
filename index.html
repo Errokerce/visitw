@@ -1,12 +1,98 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>visitw</title>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <!-- FCM Start-->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-messaging.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDl5MWcyRom3RmeYuvSiI5R5ycsxTOVoyQ",
+        authDomain: "visit-bbe42.firebaseapp.com",
+        databaseURL: "https://visit-bbe42.firebaseio.com",
+        projectId: "visit-bbe42",
+        storageBucket: "visit-bbe42.appspot.com",
+        messagingSenderId: "228818918488",
+        appId: "1:228818918488:web:b1dd7ba12921071fda3e2d"
+      };
+      // Initialize Firebase
+
+      firebase.initializeApp(firebaseConfig);
+      const messaging = firebase.messaging();
+      messaging.usePublicVapidKey(
+        "BMP_sEaayFMf28KVsGwl-1mVg1i3n8_Q8Nh2RoDbyQNGhxP7XYB3uEF46J6D1gXznCTOsmLZwNnL1RZZXs_-nGo"
+      );
+
+      function askMessaging() {
+        messaging
+          .getToken()
+          .then(currentToken => {
+            if (currentToken) {
+              console.log(currentToken);
+              sendTokenToServer(currentToken);
+              updateUIForPushEnabled(currentToken);
+            } else {
+              // Show permission request.
+              console.log(
+                "No Instance ID token available. Request permission to generate one."
+              );
+              // Show permission UI.
+              updateUIForPushPermissionRequired();
+              setTokenSentToServer(false);
+            }
+          })
+          .catch(err => {
+            console.log("An error occurred while retrieving token. ", err);
+            // showToken("Error retrieving Instance ID token. ", err);
+            // setTokenSentToServer(true);
+          });
+      }
+
+      messaging.onTokenRefresh(() => {
+        messaging
+          .getToken()
+          .then(refreshedToken => {
+            console.log("Token refreshed.");
+            // Indicate that the new Instance ID token has not yet been sent to the
+            // app server.
+            setTokenSentToServer(false);
+            // Send Instance ID token to app server.
+            sendTokenToServer(refreshedToken);
+            // ...
+          })
+          .catch(err => {
+            console.log("Unable to retrieve refreshed token ", err);
+            showToken("Unable to retrieve refreshed token ", err);
+          });
+      });
+
+      messaging.onMessage(payload => {
+        console.log("onMessage: ", payload);
+        var notifyMsg = payload.notification;
+        var notification = new Notification(notifyMsg.title, {
+          body: notifyMsg.body,
+          icon: notifyMsg.icon
+        });
+        notification.onclick = function(e) {
+          // 綁定點擊事件
+          e.preventDefault(); // prevent the browser from focusing the Notification's tab
+          window.open(notifyMsg.click_action);
+        };
+      });
+    </script>
   </body>
 </html>

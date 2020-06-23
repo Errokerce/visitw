@@ -8,8 +8,9 @@
 <script>
 import EnrtyPanel from "./components/entryPanel.vue";
 import MainPanel from "./components/mainPanel.vue";
+import vars from "./components/gVar.vue";
+import Cookies from "js-cookie";
 
-import Firebase from "firebase";
 export default {
   name: "App",
   components: {
@@ -18,56 +19,50 @@ export default {
   },
   data() {
     return {
-      isLogin: true,
-      firebaseConfig: {
-        apiKey: "AIzaSyDl5MWcyRom3RmeYuvSiI5R5ycsxTOVoyQ",
-        authDomain: "visit-bbe42.firebaseapp.com",
-        databaseURL: "https://visit-bbe42.firebaseio.com",
-        projectId: "visit-bbe42",
-        storageBucket: "visit-bbe42.appspot.com",
-        messagingSenderId: "228818918488",
-        appId: "1:228818918488:web:b1dd7ba12921071fda3e2d"
-      }
+      isLogin: false,
+      userData: {}
     };
   },
   mounted() {
     this.fmc();
+    console.log(vars.apiDomain);
+    this.getJwtAndTryLogin();
   },
   methods: {
     fmc: function() {
       console.log("trying fcm");
-      if (!Firebase.apps.length) {
-        Firebase.initializeApp(this.firebaseConfig);
-      }
-      const messaging = Firebase.messaging();
-      messaging.usePublicVapidKey(
-        "BMP_sEaayFMf28KVsGwl-1mVg1i3n8_Q8Nh2RoDbyQNGhxP7XYB3uEF46J6D1gXznCTOsmLZwNnL1RZZXs_-nGo"
-      );
-      messaging
-        .getToken()
-        .then(currentToken => {
-          if (currentToken) {
-            console.log(currentToken);
-            sendTokenToServer(currentToken);
-            updateUIForPushEnabled(currentToken);
-          } else {
-            // Show permission request.
-            console.log(
-              "No Instance ID token available. Request permission to generate one."
-            );
-            // Show permission UI.
-            updateUIForPushPermissionRequired();
-            setTokenSentToServer(false);
-          }
-        })
-        .catch(err => {
-          console.log("An error occurred while retrieving token. ", err);
-          this.showToken("Error retrieving Instance ID token. ", err);
-          Firebase.setTokenSentToServer(false);
-        });
     },
     showToken: function(msg, err) {
       console.log(msg, err);
+    },
+    getJwtAndTryLogin() {
+      let token = Cookies.get("jwtAccess");
+      if (!token) {
+        this.isLogin = false;
+      } else {
+        this.getUserInfo();
+      }
+    },
+    getUserInfo() {
+      let url = vars.apiDomain + "/user";
+      fetch(url)
+        .then(res => res.json())
+        .catch(error => console.error("Error:", error))
+        .then(response => {
+          console.log("resp", response);
+          switch (response.state) {
+            case "ok":
+              this.isLogin = true;
+              console.log(response.user_data);
+              sessionStorage.setItem(
+                "user_data",
+                JSON.stringify(response.user_data)
+              );
+              break;
+            default:
+              this.isLogin = false;
+          }
+        });
     }
   }
 };

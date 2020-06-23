@@ -7,6 +7,9 @@
       <el-col :span="16" class="right-col">
         <el-input v-model="userName" />
       </el-col>
+      <el-col>
+        <el-button @click="aa" />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -17,6 +20,11 @@ export default {
     return {
       userName: ""
     };
+  },
+  methods: {
+    aa: function() {
+      askMessaging();
+    }
   }
 };
 </script>

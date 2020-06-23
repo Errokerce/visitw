@@ -1,6 +1,7 @@
 <script>
-const apiDomain = "localhost:8040";
+const apiDomain = "https://visitw.nctu.me/api";
 export default {
+  name: "vars",
   apiDomain
 };
 </script>

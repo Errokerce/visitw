@@ -3,9 +3,10 @@
     <el-container>
       <el-button id="showNav" @click="navDrawer=true" type="primary" icon="el-icon-more" />
       <el-header height="40px">{{navItem[pageSelect]}}</el-header>
-      <more-info v-if="pageSelect==2" />
+
+      <visit-shop v-if="pageSelect==0" ref="visitPanel" />
       <reg-shop v-if="pageSelect==1" />
-      <visit-shop v-if="pageSelect==0" />
+      <more-info v-if="pageSelect==2" />
       <el-main v-if="pageSelect==3">通報病例</el-main>
     </el-container>
     <el-drawer
@@ -18,10 +19,10 @@
       <el-menu
         background-color="transparent"
         text-color="#fff"
-        default-active="1"
+        default-active="0"
         @select="handleOpen"
       >
-        <el-menu-item v-for="(name,key) in navItem" :key="key" :index="key">{{name}}</el-menu-item>
+        <el-menu-item v-for="(name,key) in navItem" :key="key" :index="key.toString()">{{name}}</el-menu-item>
       </el-menu>
     </el-drawer>
   </div>
@@ -44,6 +45,16 @@ export default {
       pageSelect: 0,
       navItem: ["到店登記", "店家管理", "資料補登", "通報病例"]
     };
+  },
+  mounted() {
+    let qs = location.href.substring(
+      location.href.indexOf("=") + 1,
+      location.href.indexOf("#")
+    );
+    if (/^\d{8}$/.test(qs)) {
+      this.$refs.visitPanel.sendVisit(qs);
+    }
+    console.log(this.$refs.visitPanel.cameraState);
   },
   methods: {
     handleOpen(key, keyPath) {
