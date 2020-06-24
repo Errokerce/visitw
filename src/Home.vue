@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="fullscreenLoading">
     <enrty-panel v-if="!isLogin" />
     <main-panel v-else />
   </div>
@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      fullscreenLoading: true,
       userData: {}
     };
   },
@@ -39,6 +40,7 @@ export default {
       let token = Cookies.get("jwtAccess");
       if (!token) {
         this.isLogin = false;
+        this.fullscreenLoading = false;
       } else {
         this.getUserInfo();
       }
@@ -58,9 +60,11 @@ export default {
                 "user_data",
                 JSON.stringify(response.user_data)
               );
+              this.fullscreenLoading = false;
               break;
             default:
               this.isLogin = false;
+              this.fullscreenLoading = false;
           }
         });
     }

@@ -1,17 +1,12 @@
 <template>
-  <iframe
-    src="https://www.youtube.com/embed/0athbS4XFj8"
-    frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
+  <div />
 </template>
 <script>
 export default {
   name: "LoginG",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      msg: "not implement"
     };
   }
 };

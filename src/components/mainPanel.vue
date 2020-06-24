@@ -7,7 +7,7 @@
       <visit-shop v-if="pageSelect==0" ref="visitPanel" />
       <reg-shop v-if="pageSelect==1" />
       <more-info v-if="pageSelect==2" />
-      <el-main v-if="pageSelect==3">通報病例</el-main>
+      <el-main v-if="pageSelect==3" class="im-sick">currently not available</el-main>
     </el-container>
     <el-drawer
       custom-class="el-drawer-class"
@@ -84,5 +84,8 @@ export default {
   border: 0;
   text-align: center;
   letter-spacing: 3px;
+}
+.im-sick {
+  text-align: center;
 }
 </style>

@@ -18,7 +18,7 @@
         :lg="{span:6,offset:9}"
         :xl="{span:2,offset:11}"
       >
-        <el-button id="glogin" @click.self="displayHover('g')" v-text="'使用Google 登入'" />
+        <!-- <el-button id="glogin" @click.self="displayHover('g')" v-text="'使用Google 登入'" /> -->
       </el-col>
       <el-col
         :xs="{span:16,offset:4}"
