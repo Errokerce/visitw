@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "ajv": "^6.12.2",
+    "ajv": "^6.12.3",
     "element-ui": "^2.13.2",
     "firebase": "^7.15.1",
     "js-cookie": "^2.2.1",
